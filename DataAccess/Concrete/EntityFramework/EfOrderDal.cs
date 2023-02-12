@@ -4,8 +4,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : EfEntityRepositoryBase<Product, NorthWindContext>, IProductDao
+    public class EfOrderDal : EfEntityRepositoryBase<Order, NorthWindContext>, IOrderDal
     {
-
     }
 }
