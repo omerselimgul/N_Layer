@@ -7,7 +7,13 @@ namespace MyApp // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            //ProductTest();
+            ProductTest();
+            //CategoryTest();
+
+        }
+
+        private static void CategoryTest()
+        {
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
             foreach (var category in categoryManager.GetAll())
             {
@@ -19,9 +25,9 @@ namespace MyApp // Note: actual namespace depends on the project name.
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
             Console.WriteLine("Test");
-            foreach (var product in productManager.GetByUnitPrice(50, 60))
+            foreach (var product in productManager.GetProductDetails())
             {
-                Console.WriteLine(product.ProductName);
+                Console.WriteLine(product.ProductName + "/" + product.CategoryName);
             }
         }
     }

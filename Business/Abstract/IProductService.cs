@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Abstract
 {
@@ -7,6 +8,7 @@ namespace Business.Abstract
         List<Product> GetAll();
         List<Product> GetAllByCategoryId(int id);
         List<Product> GetByUnitPrice(decimal min, decimal max);
+        public List<ProductDetailDto> GetProductDetails();
 
     }
 }
