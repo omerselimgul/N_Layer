@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -14,24 +16,44 @@ namespace Business.Concrete
             this.productDal = productDal;
         }
 
-        public List<Product> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
-            return productDal.GetAll();
+            if (DateTime.Now.Hour == 23)
+            {
+
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Product>>(productDal.GetAll(), Messages.ProductsListed);
         }
 
-        public List<Product> GetAllByCategoryId(int id)
+        public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
-            return productDal.GetAll(p => p.CategoryId == id);
+            return new SuccessDataResult<List<Product>>(productDal.GetAll(p => p.CategoryId == id));
         }
 
-        public List<Product> GetByUnitPrice(decimal min, decimal max)
+        public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)
         {
-            return productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
+            return new SuccessDataResult<List<Product>>(productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max));
         }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return productDal.GetProductDetails();
+            return new SuccessDataResult<List<ProductDetailDto>>(productDal.GetProductDetails());
+        }
+
+        public IDataResult<Product> GetById(int productId)
+        {
+            return new SuccessDataResult<Product>(productDal.Get(p => p.ProductId == productId));
+        }
+
+        public IResult AddProduct(Product product)
+        {
+            if (product.ProductName.Length < 2)
+            {
+                return new ErrorResult(Messages.ProductNameInvalid);
+            }
+            productDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
         }
     }
 }
