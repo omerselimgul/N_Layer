@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidition;
+using Core.CrossCuttingConcerns.Validition;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -44,13 +46,10 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Product>(productDal.Get(p => p.ProductId == productId));
         }
-
+        //[Validate] 
         public IResult AddProduct(Product product)
         {
-            if (product.ProductName.Length < 2)
-            {
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+            ValidationTool.Validate(new ProductValidator(), product);
             productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
