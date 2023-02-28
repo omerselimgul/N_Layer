@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidition;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validition;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -46,7 +47,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Product>(productDal.Get(p => p.ProductId == productId));
         }
-        //[Validate] 
+        [ValidationAspect(typeof(Product))]
         public IResult AddProduct(Product product)
         {
             ValidationTool.Validate(new ProductValidator(), product);
